@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reto Hash - Francisco Alan Romero Perea</title>
+</head>
+<body>
+  <script>
+    const hash = (x, dictionary = 'abehinoprstuv') => {
+      seed = 47;
+      for(i = 0; i < x.length; i++) {
+        seed = (seed * 19 + dictionary.indexOf(x[i]));
+      }
+      return seed;
+    }
+
+    /**
+     * This function decrypt the hash with the characters from the dictionary
+     * 
+     * @param {number} valueHash - Value hash
+     * @param {string} [dictionary = 'abehinoprstuv'] - Characters of string result decrypt
+     * @return {string} - Response characters of dictionary, '?': is a character null in dictionary
+     */
+    const unhash = (valueHash, dictionary = 'abehinoprstuv') => {
+      seed = 47;
+      result = '';
+      extra = 0;
+      do {
+        indexReverse = valueHash % 19;
+        if (indexReverse === 18) {
+          // indexReverse = -1, there is no character in the dictionary
+          result = '?' + result;
+          extra = 1;
+        } else {
+          result = '' + dictionary[indexReverse] + result;
+          extra = 0;
+        }
+        valueHash = ((valueHash - indexReverse) / 19) + extra;
+      } while (valueHash != seed)
+
+      return result;
+    }
+
+    console.log(unhash(290460476046687));
+    console.log(hash('perseverar'));
+    console.log(unhash(116383134));
+    console.log(hash('abcde'));
+    console.log(unhash(287938431396196));
+    console.log(hash('Hola mundo'));
+  </script>
+</body>
+</html>
